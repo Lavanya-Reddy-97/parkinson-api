@@ -27,8 +27,8 @@ def predict():
             float(data['COGCHG'])
         ]])
         input_data_scaled = scaler_X.transform(input_data)
-        pred_scaled = final_model.predict(input_data_scaled)[0]
-        risk_percent = scaler_y.inverse_transform([[pred_scaled]])[0, 0]
+        pred_scaled = final_model.predict(input_data_scaled)
+        risk_percent = float(scaler_y.inverse_transform(pred_scaled.reshape(-1, 1))[0])
         risk_status = "No significant risk detected (Negative)" if risk_percent <= 20 else "Significant risk detected (Positive)"
         return jsonify({
             "Parkinson_Risk_Percentage": round(risk_percent, 2),
